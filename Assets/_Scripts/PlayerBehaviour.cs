@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float movementForce;
+    public float jumpForce;
     public Rigidbody rigidbody;
+    public bool isGrounded;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +17,9 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isGrounded)
+        {
+
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
             //Move right
@@ -24,6 +29,45 @@ public class PlayerBehaviour : MonoBehaviour
         {
             //Move left
             rigidbody.AddForce(Vector3.left * movementForce);
+        }
+        if (Input.GetAxisRaw("Vertical") > 0)
+        {
+            //Move right
+            rigidbody.AddForce(Vector3.forward * movementForce);
+        }
+        if (Input.GetAxisRaw("Vertical") < 0)
+        {
+            //Move left
+            rigidbody.AddForce(Vector3.back * movementForce);
+        }
+
+            if (Input.GetAxisRaw("Jump") > 0)
+            {
+                //Move left
+                rigidbody.AddForce(Vector3.up * jumpForce);
+            }
+
+        }
+    }
+    void OnCollisionEnter(Collision other)
+    {
+//        if (other.gameObject.CompareTag("Ground"))
+  //      {
+    //        isGrounded = true;
+      //  }
+    }
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+    void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }
